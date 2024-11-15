@@ -1,26 +1,111 @@
-import { Injectable } from '@nestjs/common';
+import { BadGatewayException, BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './entities/user.entity';
+import { Repository } from 'typeorm';
+import { UserType } from './enum/user-type.enum';
+import { UpdatePasswordDto } from './dto/update-password.dto';
+import { createPasswordHashed, validatePassword } from 'src/utils/password';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {};
+
+  async createUser(createUserDto: CreateUserDto) {
+    const user = await this.getUserByEmail(createUserDto.email).catch(() => undefined);
+
+    if(user) {
+      throw new BadGatewayException('email registered in system');
+    }
+
+    const passwordHashed = await createPasswordHashed(
+      createUserDto.password,
+    );
+
+    return this.userRepository.save({
+      ...createUserDto,
+      typeUser: UserType.User,
+      password: passwordHashed,
+    });
+  }
+/*
+  async getUserbyIdUsingRelations(userId: number){
+    return this.userRepository.findOne({
+      where: {
+        id: userId,
+      },
+      relations: {
+        addresses: {
+          city: {
+            state: true,
+          },
+        },
+      },
+    })
+  }
+*/
+  async getAllUser() {
+    return this.userRepository.find();
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async getUserById(userId: number): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: {
+        id: userId
+      },
+    });
+
+    if(!user) {
+      throw new NotFoundException(`UserId:${userId} Not Found`);
+    }
+
+    return user;
+
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async getUserByEmail(email: string): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if(!user) {
+      throw new NotFoundException(`UserId:${email} Not Found`);
+    }
+
+    return user;
+
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async updatePasswordUser(
+    updatePasswordDto: UpdatePasswordDto,
+    userId: number,
+  ): Promise<User> {
+    const user = await this.getUserById(userId);
+
+    const passwordHashed = await createPasswordHashed(
+      updatePasswordDto.newPassword,
+    );
+
+    const isMatch = await validatePassword(
+      updatePasswordDto.lastPassword, 
+      user.password || '',
+    );
+
+    if (!isMatch) {
+      throw new BadRequestException('Last password invalid')
+    }
+
+    return this.userRepository.save({
+      ...user,
+      password: passwordHashed,
+    })
+    
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-  }
 }
