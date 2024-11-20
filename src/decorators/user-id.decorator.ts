@@ -8,3 +8,5 @@ export const UserId = createParamDecorator((_, ctx: ExecutionContext) =>{
 
     return loginPayLoad?.id;
 });
+
+//CASO EU PASSE A CONSTANTE UserId NO LUGAR DO PARAMETRO , O ID DO USUARIO LOGADO SERÁ PASSADO
