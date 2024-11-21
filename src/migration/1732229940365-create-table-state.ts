@@ -1,19 +1,18 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class CreateTableCity1732132949282 implements MigrationInterface {
+export class CreateTableState1732229940365 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         queryRunner.query(`
-            CREATE TABLE public.city (
+            CREATE TABLE public.state (
                 id integer NOT NULL,
-                state_id integer NOT NULL,
                 name character varying NOT NULL,
+                uf varchar(2) NOT NULL,
                 created_at timestamp without time zone DEFAULT now() NOT NULL,
                 updated_at timestamp without time zone DEFAULT now() NOT NULL,
-                primary key (id),
-                foreign key (state_id) references public.state(id)
+                primary key (id)
             );
-            CREATE SEQUENCE public.city_id_seq
+            CREATE SEQUENCE public.state_id_seq
                 AS integer
                 START WITH 1
                 INCREMENT BY 1
@@ -21,14 +20,14 @@ export class CreateTableCity1732132949282 implements MigrationInterface {
                 NO MAXVALUE
                 CACHE 1;
                 
-            ALTER SEQUENCE public.city_id_seq OWNED BY public.city.id;
-            ALTER TABLE ONLY public.city ALTER COLUMN id SET DEFAULT nextval('public.city_id_seq'::regclass);
+            ALTER SEQUENCE public.state_id_seq OWNED BY public.state.id;
+            ALTER TABLE ONLY public.state ALTER COLUMN id SET DEFAULT nextval('public.state_id_seq'::regclass);
         `);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
         queryRunner.query(`
-            drop table public.city;
+            drop table public.state;
         `);
     }
 
