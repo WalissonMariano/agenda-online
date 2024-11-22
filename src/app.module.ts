@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './guards/roles.guard';
 import { JwtModule } from '@nestjs/jwt';
+import { StateModule } from './state/state.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -26,7 +27,8 @@ import { JwtModule } from '@nestjs/jwt';
   }),
   JwtModule,
   UserModule,
-  AuthModule
+  AuthModule,
+  StateModule
   ],
   controllers: [AppController],
   providers: [AppService,
