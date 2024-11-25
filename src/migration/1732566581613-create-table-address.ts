@@ -6,7 +6,7 @@ export class CreateTableAddress1732566581613 implements MigrationInterface {
         queryRunner.query(`
             CREATE TABLE public.address (
                 id integer NOT NULL,
-                user_id integer NOT NULL,
+                establishment_id integer NOT NULL,
                 street character varying,
                 district character varying,
                 number integer NOT NULL,
