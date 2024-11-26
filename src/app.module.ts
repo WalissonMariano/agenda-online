@@ -11,6 +11,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { StateModule } from './state/state.module';
 import { CityModule } from './city/city.module';
 import { AddressModule } from './address/address.module';
+import { EstablishmentModule } from './establishment/establishment.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -32,7 +33,8 @@ import { AddressModule } from './address/address.module';
   AuthModule,
   StateModule,
   CityModule,
-  AddressModule
+  AddressModule,
+  EstablishmentModule
   ],
   controllers: [AppController],
   providers: [AppService,
