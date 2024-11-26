@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { Address } from './entities/address.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateAddressDto } from './dto/create-address.dto';
@@ -43,6 +43,14 @@ export class AddressService {
         return this.addressRepository.save({
             ...createAddressDto,
         });
+    }
+
+    async deleteAddress(
+        establishmentId: number
+    ): Promise<DeleteResult> {
+        await this.getAddressIdEstablishment(establishmentId);
+
+        return this.addressRepository.delete({ establishmentId })
     }
     
 }

@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Address } from './entities/address.entity';
 import { AddressService } from './address.service';
 import { ReturnAddressDto } from './dto/return-address.dto';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UserId } from 'src/decorators/user-id.decorator';
+import { DeleteResult } from 'typeorm';
 
 @Controller('address')
 export class AddressController {
@@ -35,5 +36,14 @@ export class AddressController {
     ): Promise<Address> {
         return this.addressService.createAddress(createAddressDto);
     }
+
+    @Delete(':establishmentId')
+    async deleteAddress(
+        @Param('establishmentId')
+        establishmentId: number
+    ): Promise<DeleteResult>{
+        return this.addressService.deleteAddress(establishmentId);
+    }
+
    
 }
