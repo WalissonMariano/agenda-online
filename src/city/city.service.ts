@@ -15,6 +15,20 @@ export class CityService {
         return this.cityRepository.find();
     }
 
+    async getCityById(id: number): Promise<City> {
+        const city = await this.cityRepository.findOne({
+            where: {
+                id
+            }
+        });
+
+        if(!city) {
+            throw new NotFoundException(`City id ${id} not found`)
+        }
+
+        return city;
+    }
+
     async getCityByStateId(stateId: number): Promise<City[]>{
         const cities = await this.cityRepository.find({
             where: {

@@ -9,6 +9,7 @@ import { Establishment } from './entities/establishment.entity';
     TypeOrmModule.forFeature([Establishment])
   ],
   providers: [EstablishmentService],
-  controllers: [EstablishmentController]
+  controllers: [EstablishmentController],
+  exports: [EstablishmentService]
 })
 export class EstablishmentModule {}

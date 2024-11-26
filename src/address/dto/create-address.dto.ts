@@ -1,8 +1,6 @@
 import { IsInt, IsString } from "class-validator";
-import { Entity } from "typeorm";
 
-@Entity({name: 'address'})
-export class Address {
+export class CreateAddressDto {
 
     @IsInt()
     establishmentId: number;
@@ -18,5 +16,8 @@ export class Address {
 
     @IsString()
     cep: string;
+
+    @IsInt()
+    cityId: number;
 
 }

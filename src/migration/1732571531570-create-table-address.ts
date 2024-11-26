@@ -14,9 +14,7 @@ export class CreateTableAddress1732571531570 implements MigrationInterface {
                 city_id integer NOT NULL,
                 created_at timestamp without time zone DEFAULT now() NOT NULL,
                 updated_at timestamp without time zone DEFAULT now() NOT NULL,
-                primary key (id),
-                foreign key (establishment_id) references public.establishment(id),
-                foreign key (city_id) references public.city(id)
+                primary key (id)
             );
             
             CREATE SEQUENCE public.address_id_seq

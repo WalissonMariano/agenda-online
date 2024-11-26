@@ -16,7 +16,7 @@ export class CityController {
         );
     }
 
-    @Get(':id')
+    @Get(':id/state')
     async getCityByStateId(
         @Param('id') 
         stateId: number

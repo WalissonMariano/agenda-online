@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Address } from "src/address/entities/address.entity";
+import { Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({name: 'establishment'})
 export class Establishment {
@@ -8,10 +9,10 @@ export class Establishment {
     @Column({name: 'name', nullable: false})
     name: string;
 
-    @Column({name: 'name', nullable: false})
+    @Column({name: 'phone', nullable: false})
     phone: string;
 
-    @Column({name: 'name', nullable: false})
+    @Column({name: 'email', nullable: false})
     email: string;
 
     @CreateDateColumn({name: 'created_at'})
@@ -19,5 +20,8 @@ export class Establishment {
 
     @UpdateDateColumn({name: 'updated_at'})
     updateddAt: Date;
+
+    @OneToOne(() => Address, (address) => address.establishment, { eager: true })
+    address: Address;
 
 }
