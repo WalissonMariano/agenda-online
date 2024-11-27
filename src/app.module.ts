@@ -12,6 +12,8 @@ import { StateModule } from './state/state.module';
 import { CityModule } from './city/city.module';
 import { AddressModule } from './address/address.module';
 import { EstablishmentModule } from './establishment/establishment.module';
+import { StatusModule } from './status/status.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -34,7 +36,9 @@ import { EstablishmentModule } from './establishment/establishment.module';
   StateModule,
   CityModule,
   AddressModule,
-  EstablishmentModule
+  EstablishmentModule,
+  StatusModule,
+  CategoryModule
   ],
   controllers: [AppController],
   providers: [AppService,
