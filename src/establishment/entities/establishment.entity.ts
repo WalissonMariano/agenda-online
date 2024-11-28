@@ -1,5 +1,6 @@
 import { Address } from "src/address/entities/address.entity";
-import { Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Schedule } from "src/schedule/entities/schedule.entity";
+import { Column, CreateDateColumn, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({name: 'establishment'})
 export class Establishment {
@@ -23,5 +24,8 @@ export class Establishment {
 
     @OneToOne(() => Address, (address) => address.establishment, { eager: true })
     address: Address;
+
+    @OneToMany(() => Schedule, (schedule: Schedule) => schedule.establishment)
+    schedule: Schedule[];
 
 }

@@ -7,6 +7,7 @@ export class CreateTableService1732710209120 implements MigrationInterface {
             CREATE TABLE public.service (
                 id integer NOT NULL,
                 name character varying NOT NULL,
+                time interval,
                 price double precision NOT NULL,
                 image character varying NOT NULL,
                 category_id integer NOT NULL,

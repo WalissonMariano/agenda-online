@@ -1,6 +1,8 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { ReturnCategoryDto } from './dto/return-category.dto';
+import { CreateCategoryDto } from './dto/create-category.dto';
+import { Category } from './entities/category.entity';
 
 @Controller('category')
 export class CategoryController {
@@ -14,4 +16,14 @@ export class CategoryController {
             (category) => new ReturnCategoryDto(category)
         );
     }
+
+    @Post()
+    @UsePipes(ValidationPipe)
+    async createCategory(
+        @Body()
+        createCategoryDto: CreateCategoryDto,
+    ): Promise<Category> {
+        return this.categoryService.createCategory(createCategoryDto);
+    }
+
 }

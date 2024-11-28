@@ -14,6 +14,7 @@ import { AddressModule } from './address/address.module';
 import { EstablishmentModule } from './establishment/establishment.module';
 import { StatusModule } from './status/status.module';
 import { CategoryModule } from './category/category.module';
+import { ScheduleModule } from './schedule/schedule.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -38,7 +39,8 @@ import { CategoryModule } from './category/category.module';
   AddressModule,
   EstablishmentModule,
   StatusModule,
-  CategoryModule
+  CategoryModule,
+  ScheduleModule
   ],
   controllers: [AppController],
   providers: [AppService,

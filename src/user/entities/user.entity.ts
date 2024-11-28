@@ -1,4 +1,5 @@
 //import { Address } from "../../address/entities/address.entity";
+import { Schedule } from "src/schedule/entities/schedule.entity";
 import { 
   Column, 
   CreateDateColumn, 
@@ -37,6 +38,7 @@ export class User {
   @UpdateDateColumn({name: 'updated_at'})
   updatedAt: Date;
 
-  //@OneToMany(() => Address, (address) => address.user)
-  //addresses?: Address[];
+  @OneToMany(() => Schedule, (schedule: Schedule) => schedule.user)
+  schedule: Schedule[];
+
 }
