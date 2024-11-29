@@ -1,5 +1,4 @@
-//import { Address } from "../../address/entities/address.entity";
-import { Schedule } from "src/schedule/entities/schedule.entity";
+import { ScheduleEntity } from "src/schedule/entities/schedule.entity";
 import { 
   Column, 
   CreateDateColumn, 
@@ -10,7 +9,7 @@ import {
  } from "typeorm";
 
 @Entity({name: 'user'})
-export class User {
+export class UserEntity {
   @PrimaryGeneratedColumn('rowid')
   id: number;
 
@@ -38,7 +37,7 @@ export class User {
   @UpdateDateColumn({name: 'updated_at'})
   updatedAt: Date;
 
-  @OneToMany(() => Schedule, (schedule: Schedule) => schedule.user)
-  schedule: Schedule[];
+  @OneToMany(() => ScheduleEntity, (schedule: ScheduleEntity) => schedule.user)
+  schedule: ScheduleEntity[];
 
 }

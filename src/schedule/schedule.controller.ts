@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ScheduleService } from './schedule.service';
 import { ReturnScheduleDto } from './dto/return-schedule.dto';
-import { Schedule } from './entities/schedule.entity';
+import { ScheduleEntity } from './entities/schedule.entity';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { DeleteResult } from 'typeorm';
 
@@ -31,7 +31,7 @@ export class ScheduleController {
     async createSchedule(
         @Body()
         createScheduleDto: CreateScheduleDto
-    ): Promise<Schedule> {
+    ): Promise<ScheduleEntity> {
         return this.scheduleService.createSchedule(createScheduleDto);
     }
 

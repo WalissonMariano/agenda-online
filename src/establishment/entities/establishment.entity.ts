@@ -1,9 +1,9 @@
-import { Address } from "src/address/entities/address.entity";
-import { Schedule } from "src/schedule/entities/schedule.entity";
+import { AddressEntity } from "src/address/entities/address.entity";
+import { ScheduleEntity } from "src/schedule/entities/schedule.entity";
 import { Column, CreateDateColumn, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({name: 'establishment'})
-export class Establishment {
+export class EstablishmentEntity {
     @PrimaryGeneratedColumn('rowid')
     id: number;
 
@@ -22,10 +22,10 @@ export class Establishment {
     @UpdateDateColumn({name: 'updated_at'})
     updateddAt: Date;
 
-    @OneToOne(() => Address, (address) => address.establishment, { eager: true })
-    address: Address;
+    @OneToOne(() => AddressEntity, (address) => address.establishment, { eager: true })
+    address: AddressEntity;
 
-    @OneToMany(() => Schedule, (schedule: Schedule) => schedule.establishment)
-    schedule: Schedule[];
+    @OneToMany(() => ScheduleEntity, (schedule: ScheduleEntity) => schedule.establishment)
+    schedule: ScheduleEntity[];
 
 }

@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, UsePipes, ValidationPipe } 
 import { EstablishmentService } from './establishment.service';
 import { ReturnEstablishmentDto } from './dto/return-establishment.dto';
 import { CreateEstablishmentDto } from './dto/create-establishment.dto';
-import { Establishment } from './entities/establishment.entity';
+import { EstablishmentEntity } from './entities/establishment.entity';
 import { DeleteResult } from 'typeorm';
 
 @Controller('establishment')
@@ -31,7 +31,7 @@ export class EstablishmentController {
     async createEstablishment(
         @Body()
         createEstablishmentDto: CreateEstablishmentDto,
-    ): Promise<Establishment> {
+    ): Promise<EstablishmentEntity> {
         return this.establishmentService.createEstablishment(createEstablishmentDto);
     }
 

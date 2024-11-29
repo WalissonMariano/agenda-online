@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { StateController } from './state.controller';
 import { StateService } from './state.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { State } from './entities/state.entity';
+import { StateEntity } from './entities/state.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([State]),
+    TypeOrmModule.forFeature([StateEntity]),
     StateModule
   ],
   controllers: [StateController],

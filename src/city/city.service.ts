@@ -1,21 +1,21 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { City } from './entities/city.entity';
+import { CityEntity } from './entities/city.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class CityService {
     
     constructor(
-        @InjectRepository(City)
-        private readonly cityRepository: Repository<City>,
+        @InjectRepository(CityEntity)
+        private readonly cityRepository: Repository<CityEntity>,
     ) {}
 
-    async getAllCity(): Promise<City[]> {
+    async getAllCity(): Promise<CityEntity[]> {
         return this.cityRepository.find();
     }
 
-    async getCityById(id: number): Promise<City> {
+    async getCityById(id: number): Promise<CityEntity> {
         const city = await this.cityRepository.findOne({
             where: {
                 id
@@ -29,7 +29,7 @@ export class CityService {
         return city;
     }
 
-    async getCityByStateId(stateId: number): Promise<City[]>{
+    async getCityByStateId(stateId: number): Promise<CityEntity[]>{
         const cities = await this.cityRepository.find({
             where: {
                 stateId

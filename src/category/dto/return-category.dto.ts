@@ -1,9 +1,9 @@
-import { Category } from "../entities/category.entity";
+import { CategoryEntity } from "../entities/category.entity";
 
 export class ReturnCategoryDto {
     name: string;
 
-    constructor(category: Category){
+    constructor(category: CategoryEntity){
         this.name = category.name;
     }
 

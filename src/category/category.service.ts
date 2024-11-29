@@ -1,17 +1,17 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { Category } from './entities/category.entity';
+import { CategoryEntity } from './entities/category.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
 
 @Injectable()
 export class CategoryService {
     constructor(
-        @InjectRepository(Category)
-        private readonly categoryRepository: Repository<Category>
+        @InjectRepository(CategoryEntity)
+        private readonly categoryRepository: Repository<CategoryEntity>
     ) {}
 
-    async getAllCategory(): Promise<Category[]> {
+    async getAllCategory(): Promise<CategoryEntity[]> {
         const category = this.categoryRepository.find();
 
         if(!category) {
@@ -21,7 +21,7 @@ export class CategoryService {
         return category;
     }
 
-    async getCategoryById(id: number): Promise<Category> {
+    async getCategoryById(id: number): Promise<CategoryEntity> {
         
         const category = await this.categoryRepository.findOne({
             where: {
@@ -37,7 +37,7 @@ export class CategoryService {
 
     }
 
-    async getCategoryByName(name: string): Promise<Category>{
+    async getCategoryByName(name: string): Promise<CategoryEntity>{
         const category = this.categoryRepository.findOne({
             where: {
                 name
@@ -55,7 +55,7 @@ export class CategoryService {
 
     async createCategory(
         createCategoryDto: CreateCategoryDto
-    ): Promise<Category> {
+    ): Promise<CategoryEntity> {
 
         const category = await this.getCategoryByName(createCategoryDto.name).catch(
             () => undefined,

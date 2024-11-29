@@ -1,9 +1,9 @@
-import { City } from "src/city/entities/city.entity";
-import { Establishment } from "src/establishment/entities/establishment.entity";
+import { CityEntity } from "src/city/entities/city.entity";
+import { EstablishmentEntity } from "src/establishment/entities/establishment.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({name: 'address'})
-export class Address {
+export class AddressEntity {
     @PrimaryGeneratedColumn('rowid')
     id: number;
 
@@ -31,12 +31,12 @@ export class Address {
     @UpdateDateColumn({name: 'updated_at'})
     updateddAt: Date;
 
-    @ManyToOne(() => City, (city: City) => city.address, { eager: true })
+    @ManyToOne(() => CityEntity, (city: CityEntity) => city.address, { eager: true })
     @JoinColumn({name:'city_id', referencedColumnName: 'id'})
-    city?: City;
+    city?: CityEntity;
 
-    @OneToOne(() => Establishment, (establishment) => establishment.address, {cascade: true})
+    @OneToOne(() => EstablishmentEntity, (establishment) => establishment.address, {cascade: true})
     @JoinColumn({name:'establishment_id', referencedColumnName:'id'})
-    establishment: Establishment;
+    establishment: EstablishmentEntity;
 
 }

@@ -1,8 +1,8 @@
-import { ProductService } from "src/product-service/entities/product-service.entity";
+import { ProductServiceEntity } from "src/product-service/entities/product-service.entity";
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({name: 'category'})
-export class Category {
+export class CategoryEntity {
     @PrimaryGeneratedColumn('rowid')
     id: number;
 
@@ -18,6 +18,6 @@ export class Category {
     @UpdateDateColumn({name: 'updated_at'})
     updateddAt: Date;
 
-    @OneToMany(() => ProductService, (productService: ProductService) => productService.category)
-    productService: ProductService[];
+    @OneToMany(() => ProductServiceEntity, (productService: ProductServiceEntity) => productService.category)
+    productService: ProductServiceEntity[];
 }

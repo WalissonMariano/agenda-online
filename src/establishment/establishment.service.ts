@@ -1,21 +1,21 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DeleteResult, Repository } from 'typeorm';
-import { Establishment } from './entities/establishment.entity';
+import { EstablishmentEntity } from './entities/establishment.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateEstablishmentDto } from './dto/create-establishment.dto';
 
 @Injectable()
 export class EstablishmentService {
     constructor(
-        @InjectRepository(Establishment)
-        private readonly establishmentRepository: Repository<Establishment>
+        @InjectRepository(EstablishmentEntity)
+        private readonly establishmentRepository: Repository<EstablishmentEntity>
     ){}
 
-    async getAllEstablishmentst(): Promise<Establishment[]> {
+    async getAllEstablishmentst(): Promise<EstablishmentEntity[]> {
         return this.establishmentRepository.find();
     }
 
-    async getEstablishmentstById(id: number): Promise<Establishment> {
+    async getEstablishmentstById(id: number): Promise<EstablishmentEntity> {
         
         const establishment = await this.establishmentRepository.findOne({
             where: {
@@ -32,7 +32,7 @@ export class EstablishmentService {
 
     async createEstablishment(
         createEstablishmentDto: CreateEstablishmentDto
-    ): Promise<Establishment> {
+    ): Promise<EstablishmentEntity> {
         return this.establishmentRepository.save({
             ...createEstablishmentDto,
         })

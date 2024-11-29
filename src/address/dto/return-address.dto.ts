@@ -1,5 +1,5 @@
 import { ReturnCityDto } from "src/city/dto/return-city.dto";
-import { Address } from "../entities/address.entity";
+import { AddressEntity } from "../entities/address.entity";
 
 export class ReturnAddressDto {
     street: string;
@@ -8,7 +8,7 @@ export class ReturnAddressDto {
     cep: string;
     city: ReturnCityDto;
 
-    constructor(address: Address){
+    constructor(address: AddressEntity){
         this.street = address.street;
         this.district = address.district;
         this.number = address.number;

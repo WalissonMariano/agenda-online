@@ -1,16 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { Status } from './entities/status.entity';
+import { StatusEntity } from './entities/status.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class StatusService {
     constructor(
-        @InjectRepository(Status)
-        private readonly statusRepository: Repository<Status>,
+        @InjectRepository(StatusEntity)
+        private readonly statusRepository: Repository<StatusEntity>,
     ){}
 
-    async getAllStatus(): Promise<Status[]> {
+    async getAllStatus(): Promise<StatusEntity[]> {
         const status = await this.statusRepository.find();
 
         if(!status) {
@@ -20,7 +20,7 @@ export class StatusService {
         return status;
     }
 
-    async getStatusById(id: number): Promise<Status> {
+    async getStatusById(id: number): Promise<StatusEntity> {
         const status = await this.statusRepository.findOne({
             where: {
                 id

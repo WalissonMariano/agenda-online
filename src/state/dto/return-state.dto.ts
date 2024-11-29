@@ -1,9 +1,9 @@
-import { State } from "../entities/state.entity";
+import { StateEntity } from "../entities/state.entity";
 
 export class ReturnStateDto {
     name: string;
 
-    constructor(state: State) {
+    constructor(state: StateEntity) {
         this.name = state.name;
     }
 }

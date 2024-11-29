@@ -12,12 +12,11 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './entities/user.entity';
+import { UserEntity } from './entities/user.entity';
 import { ReturnUserDto } from './dto/return-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UserType } from './enum/user-type.enum';
 import { Roles } from 'src/decorators/roles.decorator';
-//import { UserId } from 'src/decorators/user-id.decorator';
 
 @Controller('user')
 export class UserController {
@@ -25,7 +24,7 @@ export class UserController {
 
   @UsePipes(ValidationPipe)
   @Post()
-  async createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
+  async createUser(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
     return this.userService.createUser(createUserDto);
   }
 

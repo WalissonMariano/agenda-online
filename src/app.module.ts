@@ -16,6 +16,7 @@ import { StatusModule } from './status/status.module';
 import { CategoryModule } from './category/category.module';
 import { ScheduleModule } from './schedule/schedule.module';
 import { ProductServiceModule } from './product-service/product-service.module';
+import { ScheduleServiceModule } from './schedule-service/schedule-service.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -42,7 +43,8 @@ import { ProductServiceModule } from './product-service/product-service.module';
   StatusModule,
   CategoryModule,
   ScheduleModule,
-  ProductServiceModule
+  ProductServiceModule,
+  ScheduleServiceModule
   ],
   controllers: [AppController],
   providers: [AppService,

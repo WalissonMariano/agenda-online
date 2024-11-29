@@ -1,9 +1,9 @@
-import { Status } from "../entities/status.entity";
+import { StatusEntity } from "../entities/status.entity";
 
 export class ReturnStatusDto {
     name: string;
 
-    constructor(status: Status){
+    constructor(status: StatusEntity){
         this.name = status.name;
     }
 

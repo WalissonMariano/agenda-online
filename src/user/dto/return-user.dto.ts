@@ -1,4 +1,4 @@
-import { User } from "../entities/user.entity";
+import { UserEntity } from "../entities/user.entity";
 
 export class ReturnUserDto {
   name: string;
@@ -6,7 +6,7 @@ export class ReturnUserDto {
   phone: string;
   cpf: string;
 
-  constructor(user: User) {
+  constructor(user: UserEntity) {
     this.name = user.name,
     this.email = user.email,
     this.phone = user.phone,

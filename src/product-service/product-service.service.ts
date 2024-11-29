@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { DeleteResult, Repository } from 'typeorm';
-import { ProductService } from './entities/product-service.entity';
+import { ProductServiceEntity } from './entities/product-service.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateProductServiceDto } from './dto/create-product-service.dto';
 import { CategoryService } from 'src/category/category.service';
@@ -8,12 +8,12 @@ import { CategoryService } from 'src/category/category.service';
 @Injectable()
 export class ProductServiceService {
     constructor(
-        @InjectRepository(ProductService)
-        private readonly productServiceRepository: Repository<ProductService>,
+        @InjectRepository(ProductServiceEntity)
+        private readonly productServiceRepository: Repository<ProductServiceEntity>,
         private readonly categoryService: CategoryService,
     ){}
 
-    async getAllProductService(): Promise<ProductService[]> {
+    async getAllProductService(): Promise<ProductServiceEntity[]> {
         const productService = await this.productServiceRepository.find();
 
         if(!productService || productService.length === 0) {
@@ -25,7 +25,7 @@ export class ProductServiceService {
 
     async getProductServiceById(
         id: number
-    ): Promise<ProductService> {
+    ): Promise<ProductServiceEntity> {
         const productService = await this.productServiceRepository.findOne({
             where: {
                 id
@@ -42,7 +42,7 @@ export class ProductServiceService {
 
     async getProductServiceByName(
         name: string
-    ): Promise<ProductService> {
+    ): Promise<ProductServiceEntity> {
         const productService = await this.productServiceRepository.findOne({
             where: {
                 name
@@ -59,7 +59,7 @@ export class ProductServiceService {
 
     async createProductService(
         createProductServiceDto: CreateProductServiceDto
-    ): Promise<ProductService> {
+    ): Promise<ProductServiceEntity> {
 
         await this.categoryService.getCategoryById(createProductServiceDto.categoryId);
 

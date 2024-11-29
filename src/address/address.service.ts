@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DeleteResult, Repository } from 'typeorm';
-import { Address } from './entities/address.entity';
+import { AddressEntity } from './entities/address.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { EstablishmentService } from 'src/establishment/establishment.service';
@@ -9,18 +9,18 @@ import { CityService } from 'src/city/city.service';
 @Injectable()
 export class AddressService {
     constructor(
-        @InjectRepository(Address)
-        private readonly addressRepository: Repository<Address>,
+        @InjectRepository(AddressEntity)
+        private readonly addressRepository: Repository<AddressEntity>,
         
         private readonly establishmentService: EstablishmentService,
         private readonly cityService: CityService,
     ) {}
 
-    async getAllAddress(): Promise<Address[]> {
+    async getAllAddress(): Promise<AddressEntity[]> {
         return this.addressRepository.find();
     }
 
-    async getAddressIdEstablishment(establishmentId: number): Promise<Address[]> {
+    async getAddressIdEstablishment(establishmentId: number): Promise<AddressEntity[]> {
         const address = this.addressRepository.find({
             where: {
                 establishmentId
@@ -36,7 +36,7 @@ export class AddressService {
 
     async createAddress(
         createAddressDto: CreateAddressDto,
-    ): Promise<Address> {
+    ): Promise<AddressEntity> {
         await this.establishmentService.getEstablishmentstById(createAddressDto.establishmentId);
         await this.cityService.getCityById(createAddressDto.cityId);
 

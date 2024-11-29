@@ -1,5 +1,5 @@
 import { ReturnCategoryDto } from "src/category/dto/return-category.dto";
-import { ProductService } from "../entities/product-service.entity";
+import { ProductServiceEntity } from "../entities/product-service.entity";
 
 export class ReturnProductServiceDto {
 
@@ -10,7 +10,7 @@ export class ReturnProductServiceDto {
     category: ReturnCategoryDto;
 
     constructor(
-        productService: ProductService
+        productService: ProductServiceEntity
     ){
         this.name = productService.name;
         this.time = productService.time;

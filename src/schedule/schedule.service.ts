@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Schedule } from './entities/schedule.entity';
+import { ScheduleEntity } from './entities/schedule.entity';
 import { DeleteResult, Repository } from 'typeorm';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { UserService } from 'src/user/user.service';
@@ -10,14 +10,14 @@ import { StatusService } from 'src/status/status.service';
 @Injectable()
 export class ScheduleService {
     constructor(
-        @InjectRepository(Schedule)
-        private readonly scheduleRepository: Repository<Schedule>,
+        @InjectRepository(ScheduleEntity)
+        private readonly scheduleRepository: Repository<ScheduleEntity>,
         private readonly userService: UserService,
         private readonly establishmentService: EstablishmentService,
         private readonly statusService: StatusService
     ){}
 
-    async getAllSchedule(): Promise<Schedule[]> {
+    async getAllSchedule(): Promise<ScheduleEntity[]> {
         const schedule = await this.scheduleRepository.find();
 
         if(!schedule) {
@@ -27,7 +27,7 @@ export class ScheduleService {
         return schedule;
     }
 
-    async getScheduleById(id: number): Promise<Schedule> {
+    async getScheduleById(id: number): Promise<ScheduleEntity> {
         const schedule = await this.scheduleRepository.findOne({
             where: {
                 id
@@ -43,7 +43,7 @@ export class ScheduleService {
 
     async createSchedule(
         createScheduleDto: CreateScheduleDto
-    ): Promise<Schedule> {
+    ): Promise<ScheduleEntity> {
         await this.userService.getUserById(createScheduleDto.userId);
         await this.establishmentService.getEstablishmentstById(createScheduleDto.establishmentId);
         await this.statusService.getStatusById(createScheduleDto.statusId);

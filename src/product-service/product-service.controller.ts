@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ProductServiceService } from './product-service.service';
 import { ReturnProductServiceDto } from './dto/return-product-service.dto';
-import { ProductService } from './entities/product-service.entity';
+import { ProductServiceEntity } from './entities/product-service.entity';
 import { CreateProductServiceDto } from './dto/create-product-service.dto';
 import { DeleteResult } from 'typeorm';
 
@@ -30,7 +30,7 @@ export class ProductServiceController {
     async createProductService(
         @Body()
         createProductServiceDto: CreateProductServiceDto
-    ): Promise<ProductService> {
+    ): Promise<ProductServiceEntity> {
         return this.productServiceService.createProductService(createProductServiceDto);
     }
 

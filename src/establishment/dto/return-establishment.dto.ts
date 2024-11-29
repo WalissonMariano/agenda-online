@@ -1,5 +1,5 @@
 import { ReturnAddressDto } from "src/address/dto/return-address.dto";
-import { Establishment } from "../entities/establishment.entity";
+import { EstablishmentEntity } from "../entities/establishment.entity";
 
 export class ReturnEstablishmentDto {
     name: string;
@@ -7,7 +7,7 @@ export class ReturnEstablishmentDto {
     email: string;
     address: ReturnAddressDto;
 
-    constructor(establishment: Establishment){
+    constructor(establishment: EstablishmentEntity){
         this.name = establishment.name;
         this.phone = establishment.phone;
         this.email = establishment.email;

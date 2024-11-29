@@ -1,7 +1,7 @@
 import { BadGatewayException, BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
+import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { UserType } from './enum/user-type.enum';
 import { UpdatePasswordDto } from './dto/update-password.dto';
@@ -11,8 +11,8 @@ import { createPasswordHashed, validatePassword } from 'src/utils/password';
 export class UserService {
 
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
   ) {};
 
   async createUser(createUserDto: CreateUserDto) {
@@ -52,7 +52,7 @@ export class UserService {
     return this.userRepository.find();
   }
 
-  async getUserById(userId: number): Promise<User> {
+  async getUserById(userId: number): Promise<UserEntity> {
     const user = await this.userRepository.findOne({
       where: {
         id: userId
@@ -67,7 +67,7 @@ export class UserService {
 
   }
 
-  async getUserByEmail(email: string): Promise<User> {
+  async getUserByEmail(email: string): Promise<UserEntity> {
     const user = await this.userRepository.findOne({
       where: {
         email,
@@ -85,7 +85,7 @@ export class UserService {
   async updatePasswordUser(
     updatePasswordDto: UpdatePasswordDto,
     userId: number,
-  ): Promise<User> {
+  ): Promise<UserEntity> {
     const user = await this.getUserById(userId);
 
     const passwordHashed = await createPasswordHashed(
@@ -109,3 +109,4 @@ export class UserService {
   }
 
 }
+

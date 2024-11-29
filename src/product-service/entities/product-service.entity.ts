@@ -1,8 +1,8 @@
-import { Category } from "src/category/entities/category.entity";
+import { CategoryEntity } from "src/category/entities/category.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({name: 'product_service'})
-export class ProductService {
+export class ProductServiceEntity {
     @PrimaryGeneratedColumn('rowid')
     id: number;
 
@@ -27,7 +27,7 @@ export class ProductService {
     @UpdateDateColumn({name: 'updated_at'})
     updateddAt: Date;
 
-    @ManyToOne(() => Category, (category: Category) => category.productService, { eager: true })
+    @ManyToOne(() => CategoryEntity, (category: CategoryEntity) => category.productService, { eager: true })
     @JoinColumn({name:'category_id', referencedColumnName: 'id'})
-    category?: Category;
+    category?: CategoryEntity;
 }

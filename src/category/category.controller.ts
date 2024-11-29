@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post, UsePipes, ValidationPipe } from '@n
 import { CategoryService } from './category.service';
 import { ReturnCategoryDto } from './dto/return-category.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import { Category } from './entities/category.entity';
+import { CategoryEntity } from './entities/category.entity';
 
 @Controller('category')
 export class CategoryController {
@@ -32,7 +32,7 @@ export class CategoryController {
     async createCategory(
         @Body()
         createCategoryDto: CreateCategoryDto,
-    ): Promise<Category> {
+    ): Promise<CategoryEntity> {
         return this.categoryService.createCategory(createCategoryDto);
     }
 
