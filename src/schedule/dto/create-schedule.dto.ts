@@ -1,4 +1,4 @@
-import { IsDate, IsInt } from "class-validator";
+import { IsDate, IsDateString, IsInt } from "class-validator";
 
 export class CreateScheduleDto {
 
@@ -11,7 +11,7 @@ export class CreateScheduleDto {
     @IsInt()
     statusId: number;
 
-    @IsDate()
+    @IsDateString()
     scheduleDate: Date;
 
 }

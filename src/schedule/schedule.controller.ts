@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ScheduleService } from './schedule.service';
 import { ReturnScheduleDto } from './dto/return-schedule.dto';
 import { Schedule } from './entities/schedule.entity';
@@ -26,6 +26,7 @@ export class ScheduleController {
         return new ReturnScheduleDto(await this.scheduleService.getScheduleById(id));
     }
 
+    @UsePipes(ValidationPipe)
     @Post()
     async createSchedule(
         @Body()

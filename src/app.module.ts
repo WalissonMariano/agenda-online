@@ -15,6 +15,7 @@ import { EstablishmentModule } from './establishment/establishment.module';
 import { StatusModule } from './status/status.module';
 import { CategoryModule } from './category/category.module';
 import { ScheduleModule } from './schedule/schedule.module';
+import { ProductServiceModule } from './product-service/product-service.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -40,14 +41,15 @@ import { ScheduleModule } from './schedule/schedule.module';
   EstablishmentModule,
   StatusModule,
   CategoryModule,
-  ScheduleModule
+  ScheduleModule,
+  ProductServiceModule
   ],
   controllers: [AppController],
   providers: [AppService,
     {
       provide: APP_GUARD,
       useClass: RolesGuard,
-    }
+    },
   ],
 })
 export class AppModule {}

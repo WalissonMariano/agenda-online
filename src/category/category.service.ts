@@ -22,12 +22,13 @@ export class CategoryService {
     }
 
     async getCategoryById(id: number): Promise<Category> {
-        const category = this.categoryRepository.findOne({
+        
+        const category = await this.categoryRepository.findOne({
             where: {
                 id
             }
         });
-
+        
         if(!category) {
             throw new NotFoundException(`Not found category id ${id}`);
         }
