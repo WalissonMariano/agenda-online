@@ -4,6 +4,7 @@ import { ReturnEstablishmentDto } from './dto/return-establishment.dto';
 import { CreateEstablishmentDto } from './dto/create-establishment.dto';
 import { EstablishmentEntity } from './entities/establishment.entity';
 import { DeleteResult } from 'typeorm';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('establishment')
 export class EstablishmentController {
@@ -11,6 +12,7 @@ export class EstablishmentController {
         private readonly establishmentService: EstablishmentService,
     ){}
 
+    @ApiOperation({ summary: 'Busca todos estabelecimentos.' })
     @Get()
     async getAllEstablishments(): Promise<ReturnEstablishmentDto[]> {
         return (await this.establishmentService.getAllEstablishmentst()).map(
@@ -18,6 +20,7 @@ export class EstablishmentController {
         )
     }
 
+    @ApiOperation({ summary: 'Busca estabelecimento por id.' })
     @Get(':id')
     async getEstablishmentstById(
         @Param('id')
@@ -26,6 +29,7 @@ export class EstablishmentController {
         return new ReturnEstablishmentDto(await this.establishmentService.getEstablishmentstById(id));
     }
 
+    @ApiOperation({ summary: 'Cadastra estabelecimento.' })
     @Post()
     @UsePipes(ValidationPipe)
     async createEstablishment(
@@ -35,6 +39,7 @@ export class EstablishmentController {
         return this.establishmentService.createEstablishment(createEstablishmentDto);
     }
 
+    @ApiOperation({ summary: 'Deleta estabelecimento.' })
     @Delete(':id')
     async deleteEstablishnebt(
         @Param('id')

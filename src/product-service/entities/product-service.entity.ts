@@ -1,5 +1,6 @@
 import { CategoryEntity } from "src/category/entities/category.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { ScheduleServiceEntity } from "src/schedule-service/entities/schedule-service.entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({name: 'product_service'})
 export class ProductServiceEntity {
@@ -30,4 +31,8 @@ export class ProductServiceEntity {
     @ManyToOne(() => CategoryEntity, (category: CategoryEntity) => category.productService, { eager: true })
     @JoinColumn({name:'category_id', referencedColumnName: 'id'})
     category?: CategoryEntity;
+
+    @OneToMany(() => ScheduleServiceEntity, (scheduleService: ScheduleServiceEntity) => scheduleService.productService)
+    scheduleService: ScheduleServiceEntity[];
+
 }

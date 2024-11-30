@@ -4,6 +4,7 @@ import { ReturnScheduleDto } from './dto/return-schedule.dto';
 import { ScheduleEntity } from './entities/schedule.entity';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { DeleteResult } from 'typeorm';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('schedule')
 export class ScheduleController {
@@ -11,6 +12,7 @@ export class ScheduleController {
         private readonly scheduleService: ScheduleService,
     ){}
 
+    @ApiOperation({ summary: 'Busca todos agendamento.' })
     @Get()
     async getAllSchedule(): Promise<ReturnScheduleDto[]> {
         return (await this.scheduleService.getAllSchedule()).map(
@@ -18,6 +20,7 @@ export class ScheduleController {
         )
     }
 
+    @ApiOperation({ summary: 'Busca agendamento por id.' })
     @Get(':id')
     async getScheduleById(
         @Param('id')
@@ -26,6 +29,7 @@ export class ScheduleController {
         return new ReturnScheduleDto(await this.scheduleService.getScheduleById(id));
     }
 
+    @ApiOperation({ summary: 'Cadastra agendamento.' })
     @UsePipes(ValidationPipe)
     @Post()
     async createSchedule(
@@ -35,6 +39,7 @@ export class ScheduleController {
         return this.scheduleService.createSchedule(createScheduleDto);
     }
 
+    @ApiOperation({ summary: 'Deleta agendamento.' })
     @Delete(':id')
     async deleteSchedule(
         @Param('id')

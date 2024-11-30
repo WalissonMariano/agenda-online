@@ -17,11 +17,13 @@ import { ReturnUserDto } from './dto/return-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UserType } from './enum/user-type.enum';
 import { Roles } from 'src/decorators/roles.decorator';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @ApiOperation({ summary: 'Cadastra usuário.' })
   @UsePipes(ValidationPipe)
   @Post()
   async createUser(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
@@ -29,6 +31,7 @@ export class UserController {
   }
 
   //@Roles(UserType.Admin, UserType.User)
+  @ApiOperation({ summary: 'Busca todos usuários.' })
   @Get()
   async getAllUser(): Promise<ReturnUserDto[]> {
     return (await this.userService.getAllUser()).map(

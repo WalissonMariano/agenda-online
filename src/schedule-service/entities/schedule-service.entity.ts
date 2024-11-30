@@ -1,5 +1,6 @@
+import { ProductServiceEntity } from "src/product-service/entities/product-service.entity";
 import { ScheduleEntity } from "src/schedule/entities/schedule.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('schedule_service')
 export class ScheduleServiceEntity {
@@ -9,13 +10,13 @@ export class ScheduleServiceEntity {
     @Column({name: 'schedule_id', nullable: false})
     scheduleId: number;
 
-    @Column({name: 'schedule_id', nullable: false})
+    @Column({name: 'service_id', nullable: false})
     serviceId: number;
 
-    @Column({name: 'schedule_id', nullable: false})
+    @Column({name: 'quantity', nullable: false})
     quantity: number;
 
-    @Column({name: 'schedule_id', nullable: false})
+    @Column({name: 'total_price', nullable: false})
     totalPrice: number;
 
     @CreateDateColumn({name: 'created_at'})
@@ -27,4 +28,10 @@ export class ScheduleServiceEntity {
     @ManyToOne(() => ScheduleEntity, (schedule: ScheduleEntity) => schedule.scheduleService, { eager: true })
     @JoinColumn({name:'schedule_id', referencedColumnName: 'id'})
     schedule?: ScheduleEntity;
+
+    @OneToOne(() => ProductServiceEntity, (productService) => productService.scheduleService, {cascade: true})
+    @JoinColumn({name:'service_id', referencedColumnName:'id'})
+    productService: ProductServiceEntity;
+
+    
 }

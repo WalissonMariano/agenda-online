@@ -5,6 +5,7 @@ import { ReturnAddressDto } from './dto/return-address.dto';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UserId } from 'src/decorators/user-id.decorator';
 import { DeleteResult } from 'typeorm';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('address')
 export class AddressController {
@@ -12,6 +13,7 @@ export class AddressController {
         private readonly addressService: AddressService
     ) {}
 
+    @ApiOperation({ summary: 'Busca todos endereços.' })
     @Get()
     async getAllAddress(): Promise<ReturnAddressDto[]> {
         return (await this.addressService.getAllAddress()).map(
@@ -19,6 +21,7 @@ export class AddressController {
         );
     }
 
+    @ApiOperation({ summary: 'Busca endereço por id.' })
     @Get(':id/establishment')
     async getAddressIdEstablishment(
         @Param('id')
@@ -29,6 +32,7 @@ export class AddressController {
         )
     }
 
+    @ApiOperation({ summary: 'Cadastra endereço.' })
     @Post()
     @UsePipes(ValidationPipe)
     async createAddress(
@@ -37,6 +41,7 @@ export class AddressController {
         return this.addressService.createAddress(createAddressDto);
     }
 
+    @ApiOperation({ summary: 'Deleta endereço.' })
     @Delete(':establishmentId')
     async deleteAddress(
         @Param('establishmentId')

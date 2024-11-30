@@ -3,6 +3,7 @@ import { CategoryService } from './category.service';
 import { ReturnCategoryDto } from './dto/return-category.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { CategoryEntity } from './entities/category.entity';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('category')
 export class CategoryController {
@@ -10,6 +11,7 @@ export class CategoryController {
         private readonly categoryService: CategoryService,
     ){}
 
+    @ApiOperation({ summary: 'Busca todas categorias.' })
     @Get()
     async getAllCategory(): Promise<ReturnCategoryDto[]>{
         return (await this.categoryService.getAllCategory()).map(
@@ -17,6 +19,7 @@ export class CategoryController {
         );
     }
 
+    @ApiOperation({ summary: 'Busca categoria por id.' })
     @Get(':id')
     async getCategoryById(
         @Param('id')
@@ -27,6 +30,7 @@ export class CategoryController {
 
     }
 
+    @ApiOperation({ summary: 'Cadastra categoria.' })
     @Post()
     @UsePipes(ValidationPipe)
     async createCategory(
