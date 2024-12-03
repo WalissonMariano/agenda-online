@@ -30,9 +30,7 @@ export class ProductServiceEntity {
 
     @ManyToOne(() => CategoryEntity, (category: CategoryEntity) => category.productService, { eager: true })
     @JoinColumn({name:'category_id', referencedColumnName: 'id'})
-    category?: CategoryEntity;
+    category: CategoryEntity;
 
-    @OneToMany(() => ScheduleServiceEntity, (scheduleService: ScheduleServiceEntity) => scheduleService.productService)
-    scheduleService: ScheduleServiceEntity[];
 
 }

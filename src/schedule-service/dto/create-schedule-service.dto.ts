@@ -2,7 +2,6 @@ import { IsNumber } from "class-validator";
 
 export class CreateScheduleServiceDto {
 
-    @IsNumber()
     scheduleId: number;
 
     @IsNumber()

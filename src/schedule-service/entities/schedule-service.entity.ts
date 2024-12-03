@@ -25,11 +25,11 @@ export class ScheduleServiceEntity {
     @UpdateDateColumn({name: 'updated_at'})
     updateddAt: Date;
 
-    @ManyToOne(() => ScheduleEntity, (schedule: ScheduleEntity) => schedule.scheduleService, { eager: true })
+    @ManyToOne(() => ScheduleEntity, (schedule: ScheduleEntity) => schedule.scheduleService, { onDelete: 'CASCADE' })
     @JoinColumn({name:'schedule_id', referencedColumnName: 'id'})
-    schedule?: ScheduleEntity;
+    schedule: ScheduleEntity;
 
-    @OneToOne(() => ProductServiceEntity, (productService) => productService.scheduleService, {cascade: true})
+    @OneToOne(() => ProductServiceEntity, {eager: true, cascade: true})
     @JoinColumn({name:'service_id', referencedColumnName:'id'})
     productService: ProductServiceEntity;
 

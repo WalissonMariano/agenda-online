@@ -39,6 +39,6 @@ export class ScheduleEntity {
     @JoinColumn({name:'status_id', referencedColumnName: 'id'})
     status?: StatusEntity;
 
-    @OneToMany(() => ScheduleServiceEntity, (scheduleService: ScheduleServiceEntity) => scheduleService.schedule)
-    scheduleService: ScheduleServiceEntity[];
+    @OneToMany(() => ScheduleServiceEntity, (scheduleService: ScheduleServiceEntity) => scheduleService.schedule, {cascade: true, eager: true})
+    scheduleService?: ScheduleServiceEntity[];
 }

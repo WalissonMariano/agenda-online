@@ -2,6 +2,7 @@ import { ReturnCityDto } from "src/city/dto/return-city.dto";
 import { AddressEntity } from "../entities/address.entity";
 
 export class ReturnAddressDto {
+    id: number;
     street: string;
     district: string;
     number: number;
@@ -9,6 +10,7 @@ export class ReturnAddressDto {
     city: ReturnCityDto;
 
     constructor(address: AddressEntity){
+        this.id = address.id;
         this.street = address.street;
         this.district = address.district;
         this.number = address.number;
