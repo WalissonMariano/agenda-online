@@ -26,7 +26,7 @@ Declare as seguintes variáveis de ambiente:
 
 ## Design de banco
 
-<img src="https://i.ibb.co/HXF17Ty/Agenda-Online.png" alt="Untitled-7" border="0">
+<img src="https://ibb.co/sJsZ8Q8w" alt="Untitled-7" border="0">
 
 ## Instalação de dependências
 
