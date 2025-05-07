@@ -1,6 +1,5 @@
 import { CategoryEntity } from "src/category/entities/category.entity";
-import { ScheduleServiceEntity } from "src/schedule-service/entities/schedule-service.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({name: 'product_service'})
 export class ProductServiceEntity {

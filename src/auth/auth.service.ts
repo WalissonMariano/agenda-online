@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserEntity } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
 import { LoginDto } from './dto/login.dto';
-import * as bcrypt from 'bcrypt';
+//import * as bcrypt from 'bcrypt';
 import { ReturnLoginDto } from './dto/return-login.dto';
 import { ReturnUserDto } from '../user/dto/return-user.dto';
 import { LoginPayload } from './dto/loginPayload.dto';
@@ -19,7 +19,7 @@ export class AuthService {
 
     async login(loginDto: LoginDto): Promise<ReturnLoginDto> {
         const user: UserEntity | undefined = await this.userService.getUserByEmail(loginDto.email).catch(() => undefined);
-
+        
         const isMatch = await validatePassword(
             loginDto.password, 
             user?.password || ''

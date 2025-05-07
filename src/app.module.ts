@@ -17,6 +17,9 @@ import { CategoryModule } from './category/category.module';
 import { ScheduleModule } from './schedule/schedule.module';
 import { ProductServiceModule } from './product-service/product-service.module';
 import { ScheduleServiceModule } from './schedule-service/schedule-service.module';
+import { ProfessionalModule } from './professional/professional.module';
+import { TypeUserController } from './type_user/type_user.controller';
+import { TypeUserModule } from './type_user/type_user.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -44,9 +47,11 @@ import { ScheduleServiceModule } from './schedule-service/schedule-service.modul
   CategoryModule,
   ScheduleModule,
   ProductServiceModule,
-  ScheduleServiceModule
+  ScheduleServiceModule,
+  ProfessionalModule,
+  TypeUserModule
   ],
-  controllers: [AppController],
+  controllers: [AppController, TypeUserController],
   providers: [AppService,
     {
       provide: APP_GUARD,
