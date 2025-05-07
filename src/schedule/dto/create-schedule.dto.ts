@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsDate, IsDateString, IsInt, ValidateNested } from "class-validator";
+import { IsDateString, IsInt, ValidateNested } from "class-validator";
 import { CreateScheduleServiceDto } from "src/schedule-service/dto/create-schedule-service.dto";
 
 export class CreateScheduleDto {
