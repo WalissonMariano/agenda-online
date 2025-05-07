@@ -13,3 +13,5 @@ export const AppDataSource = new DataSource({
     synchronize: false,
     migrationsRun: false,
   });
+
+  //npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate ./src/migration/CreateTypeUserTable -d ./data-source.ts
