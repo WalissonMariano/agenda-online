@@ -1,7 +1,7 @@
 
 ## Descrição
 
-API para gerenciar pedidos, incluindo operações de criação, atualização, exclusão e visualização de pedidos e seus itens.
+API para agendamento de serviços e compra de produtos. O usuário pode, por exemplo, agendar um serviço em uma barbearia ou comprar produtos oferecidos pelo estabelecimento.
 
 ## Requisitos
 
