@@ -72,6 +72,30 @@ Inserido via migration. Use no `POST /auth`:
 | E-mail | `admin@agendaonline.com` |
 | Senha | `Admin@123` |
 
+## Seed / dados demo (portfólio)
+
+Lookup (estados, cidades, status, tipos de usuário e admin) vem das **migrations**.
+
+O seed popula o domínio demo (usuários, estabelecimento, serviços, profissional e agendamentos):
+
+```bash
+# popula dados demo (migrations já aplicadas)
+npm run seed
+
+# zera o banco, roda migrations e depois o seed
+npm run db:demo-reset
+```
+
+### Usuários demo (senha `Admin@123`)
+
+| E-mail | Tipo |
+| --- | --- |
+| `admin@agendaonline.com` | Administrador (migration) |
+| `profissional@agendaonline.com` | Profissional |
+| `cliente@agendaonline.com` | Usuário/cliente |
+
+Também cria: estabelecimento **Barbearia Portfolio**, endereço, categorias, produtos/serviços e agendamentos de exemplo.
+
 ### Tipos de usuário (`type_user`)
 
 | Id | Tipo |
