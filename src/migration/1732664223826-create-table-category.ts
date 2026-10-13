@@ -3,7 +3,7 @@ import { MigrationInterface, QueryRunner } from "typeorm";
 export class CreateTableCategory1732664223826 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        queryRunner.query(`
+        await queryRunner.query(`
             CREATE TABLE public.category (
                 id integer NOT NULL,
                 name character varying NOT NULL,
@@ -28,7 +28,7 @@ export class CreateTableCategory1732664223826 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        queryRunner.query(`
+        await queryRunner.query(`
             drop table public.category;
         `);
     }

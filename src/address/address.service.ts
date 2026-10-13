@@ -1,56 +1,78 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { DeleteResult, Repository } from 'typeorm';
-import { AddressEntity } from './entities/address.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { DeleteResult, Repository } from 'typeorm';
+import { CityService } from '../city/city.service';
+import { EstablishmentService } from '../establishment/establishment.service';
 import { CreateAddressDto } from './dto/create-address.dto';
-import { EstablishmentService } from 'src/establishment/establishment.service';
-import { CityService } from 'src/city/city.service';
+import { UpdateAddressDto } from './dto/update-address.dto';
+import { AddressEntity } from './entities/address.entity';
 
 @Injectable()
 export class AddressService {
-    constructor(
-        @InjectRepository(AddressEntity)
-        private readonly addressRepository: Repository<AddressEntity>,
-        
-        private readonly establishmentService: EstablishmentService,
-        private readonly cityService: CityService,
-    ) {}
+  constructor(
+    @InjectRepository(AddressEntity)
+    private readonly addressRepository: Repository<AddressEntity>,
+    private readonly establishmentService: EstablishmentService,
+    private readonly cityService: CityService,
+  ) {}
 
-    async getAllAddress(): Promise<AddressEntity[]> {
-        return this.addressRepository.find();
+  async getAllAddress(): Promise<AddressEntity[]> {
+    return this.addressRepository.find();
+  }
+
+  async getAddressById(id: number): Promise<AddressEntity> {
+    const address = await this.addressRepository.findOne({ where: { id } });
+
+    if (!address) {
+      throw new NotFoundException(`Endereço ${id} não encontrado.`);
     }
 
-    async getAddressIdEstablishment(establishmentId: number): Promise<AddressEntity[]> {
-        const address = this.addressRepository.find({
-            where: {
-                establishmentId
-            }
-        })
+    return address;
+  }
 
-        if(!address){
-            throw new NotFoundException(`Not found address for establishmentId ${establishmentId}`)
-        }
-        
-        return address;
+  async getAddressByEstablishmentId(
+    establishmentId: number,
+  ): Promise<AddressEntity[]> {
+    return this.addressRepository.find({
+      where: { establishmentId },
+    });
+  }
+
+  async createAddress(
+    createAddressDto: CreateAddressDto,
+  ): Promise<AddressEntity> {
+    await this.establishmentService.getEstablishmentById(
+      createAddressDto.establishmentId,
+    );
+    await this.cityService.getCityById(createAddressDto.cityId);
+
+    return this.addressRepository.save(createAddressDto);
+  }
+
+  async updateAddress(
+    id: number,
+    updateAddressDto: UpdateAddressDto,
+  ): Promise<AddressEntity> {
+    const address = await this.getAddressById(id);
+
+    if (updateAddressDto.establishmentId) {
+      await this.establishmentService.getEstablishmentById(
+        updateAddressDto.establishmentId,
+      );
     }
 
-    async createAddress(
-        createAddressDto: CreateAddressDto,
-    ): Promise<AddressEntity> {
-        await this.establishmentService.getEstablishmentstById(createAddressDto.establishmentId);
-        await this.cityService.getCityById(createAddressDto.cityId);
-
-        return this.addressRepository.save({
-            ...createAddressDto,
-        });
+    if (updateAddressDto.cityId) {
+      await this.cityService.getCityById(updateAddressDto.cityId);
     }
 
-    async deleteAddress(
-        establishmentId: number
-    ): Promise<DeleteResult> {
-        await this.getAddressIdEstablishment(establishmentId);
+    return this.addressRepository.save({
+      ...address,
+      ...updateAddressDto,
+    });
+  }
 
-        return this.addressRepository.delete({ establishmentId })
-    }
-    
+  async deleteAddress(id: number): Promise<DeleteResult> {
+    await this.getAddressById(id);
+    return this.addressRepository.delete({ id });
+  }
 }

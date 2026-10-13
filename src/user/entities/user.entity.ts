@@ -1,43 +1,55 @@
-import { ScheduleEntity } from "src/schedule/entities/schedule.entity";
-import { 
-  Column, 
-  CreateDateColumn, 
-  Entity, 
-  PrimaryGeneratedColumn, 
+import { ScheduleEntity } from '../../schedule/entities/schedule.entity';
+import { TypeUserEntity } from '../../type-user/entities/type-user.entity';
+import { ProfessionalEntity } from '../../professional/entities/professional.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
-  OneToMany
- } from "typeorm";
+} from 'typeorm';
 
-@Entity({name: 'user'})
+@Entity({ name: 'user' })
 export class UserEntity {
   @PrimaryGeneratedColumn('rowid')
   id: number;
 
-  @Column({name: 'name', nullable: false})
+  @Column({ name: 'name', nullable: false })
   name: string;
 
-  @Column({name: 'email', nullable: false})
+  @Column({ name: 'email', nullable: false })
   email: string;
 
-  @Column({name: 'cpf', nullable: false})
+  @Column({ name: 'cpf', nullable: false })
   cpf: string;
 
-  @Column({name: 'phone'})
+  @Column({ name: 'phone' })
   phone: string;
 
-  @Column({name: 'password', nullable: false})
+  @Column({ name: 'password', nullable: false })
   password: string;
 
-  @Column({name: 'type_user', nullable: false})
+  @Column({ name: 'type_user', nullable: false })
   typeUser: number;
 
-  @CreateDateColumn({name: 'created_at'})
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({name: 'updated_at'})
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @OneToMany(() => ScheduleEntity, (schedule: ScheduleEntity) => schedule.user)
-  schedule: ScheduleEntity[];
+  @ManyToOne(() => TypeUserEntity, (typeUser) => typeUser.users, {
+    eager: true,
+  })
+  @JoinColumn({ name: 'type_user', referencedColumnName: 'id' })
+  typeUserEntity?: TypeUserEntity;
 
+  @OneToMany(() => ScheduleEntity, (schedule) => schedule.user)
+  schedule?: ScheduleEntity[];
+
+  @OneToMany(() => ProfessionalEntity, (professional) => professional.user)
+  professionals?: ProfessionalEntity[];
 }

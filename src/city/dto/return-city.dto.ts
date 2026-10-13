@@ -1,12 +1,16 @@
-import { ReturnStateDto } from "src/state/dto/return-state.dto";
-import { CityEntity } from "../entities/city.entity";
+import { ReturnStateDto } from '../../state/dto/return-state.dto';
+import { CityEntity } from '../entities/city.entity';
 
 export class ReturnCityDto {
-    name: string;
-    state?: ReturnStateDto;
+  id: number;
+  name: string;
+  stateId: number;
+  state?: ReturnStateDto;
 
-    constructor(city: CityEntity) {
-        this.name = city.name;
-        this.state = city.state ? new ReturnStateDto(city.state) : undefined;
-    }
+  constructor(city: CityEntity) {
+    this.id = city.id;
+    this.name = city.name;
+    this.stateId = city.stateId;
+    this.state = city.state ? new ReturnStateDto(city.state) : undefined;
+  }
 }

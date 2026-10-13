@@ -1,73 +1,79 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { CategoryEntity } from './entities/category.entity';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
+import { CategoryEntity } from './entities/category.entity';
 
 @Injectable()
 export class CategoryService {
-    constructor(
-        @InjectRepository(CategoryEntity)
-        private readonly categoryRepository: Repository<CategoryEntity>
-    ) {}
+  constructor(
+    @InjectRepository(CategoryEntity)
+    private readonly categoryRepository: Repository<CategoryEntity>,
+  ) {}
 
-    async getAllCategory(): Promise<CategoryEntity[]> {
-        const category = this.categoryRepository.find();
+  async getAllCategory(): Promise<CategoryEntity[]> {
+    return this.categoryRepository.find();
+  }
 
-        if(!category) {
-            throw new NotFoundException(`Not found category`);
-        }
+  async getCategoryById(id: number): Promise<CategoryEntity> {
+    const category = await this.categoryRepository.findOne({
+      where: { id },
+    });
 
-        return category;
+    if (!category) {
+      throw new NotFoundException(`Categoria ${id} não encontrada.`);
     }
 
-    async getCategoryById(id: number): Promise<CategoryEntity> {
-        
-        const category = await this.categoryRepository.findOne({
-            where: {
-                id
-            }
-        });
-        
-        if(!category) {
-            throw new NotFoundException(`Not found category id ${id}`);
-        }
+    return category;
+  }
 
-        return category
+  async getCategoryByName(name: string): Promise<CategoryEntity> {
+    const category = await this.categoryRepository.findOne({
+      where: { name },
+    });
 
+    if (!category) {
+      throw new NotFoundException(`Categoria ${name} não encontrada.`);
     }
 
-    async getCategoryByName(name: string): Promise<CategoryEntity>{
-        const category = this.categoryRepository.findOne({
-            where: {
-                name
-            }
-        })
+    return category;
+  }
 
-        if(!category) {
+  async createCategory(
+    createCategoryDto: CreateCategoryDto,
+  ): Promise<CategoryEntity> {
+    const category = await this.getCategoryByName(createCategoryDto.name).catch(
+      () => undefined,
+    );
 
-            throw new NotFoundException(`Not found category name ${name}`);
-
-        }
-
-        return category;
+    if (category) {
+      throw new ConflictException(
+        `Categoria ${createCategoryDto.name} já existe.`,
+      );
     }
 
-    async createCategory(
-        createCategoryDto: CreateCategoryDto
-    ): Promise<CategoryEntity> {
+    return this.categoryRepository.save(createCategoryDto);
+  }
 
-        const category = await this.getCategoryByName(createCategoryDto.name).catch(
-            () => undefined,
-        );
+  async updateCategory(
+    id: number,
+    updateCategoryDto: UpdateCategoryDto,
+  ): Promise<CategoryEntity> {
+    const category = await this.getCategoryById(id);
 
-        if(category) {
-            throw new BadRequestException(
-                `Category name ${createCategoryDto.name} exist`,
-            );
-        }
+    return this.categoryRepository.save({
+      ...category,
+      ...updateCategoryDto,
+    });
+  }
 
-        return this.categoryRepository.save(createCategoryDto);
-
-    }
+  async deleteCategory(id: number): Promise<DeleteResult> {
+    await this.getCategoryById(id);
+    return this.categoryRepository.delete({ id });
+  }
 }

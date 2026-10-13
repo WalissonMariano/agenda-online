@@ -1,0 +1,26 @@
+---
+description: Padrão das entities TypeORM
+globs: src/**/*.entity.ts
+alwaysApply: false
+---
+
+# Entities
+
+Uma entity por tabela, na pasta do módulo (`src/schedule/entities/schedule.entity.ts`). Classe com sufixo `Entity`.
+
+- `@Entity({ name })` explícito, tabela no singular/snake (`user`, `schedule`, `product_service`)
+- `@PrimaryGeneratedColumn('rowid')` em `id`
+- `@Column({ name: 'schedule_date' })` com a coluna snake_case e a propriedade camelCase
+- `@CreateDateColumn({ name: 'created_at' })` e `@UpdateDateColumn({ name: 'updated_at' })` com props `createdAt` / `updatedAt`
+- Relação só se for usada. FK no `@JoinColumn`. `ManyToOne` / `OneToMany` com o lado inverso correto
+- `cascade: true` só no aggregate que grava filhos juntos (`schedule` → `scheduleService`). Não cascatear alteração no cadastro de `product_service` ao gravar item de agenda
+- Mudança de tabela entra em `src/migration/`. No boot a API roda migrations (`migrationsRun: true`). Também dá para usar `npm run migration:run` / `migration:generate` / `migration:revert`
+
+```typescript
+@Column({ name: 'schedule_date', nullable: false })
+scheduleDate: Date;
+
+@ManyToOne(() => UserEntity, (user) => user.schedule, { eager: true })
+@JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+user?: UserEntity;
+```

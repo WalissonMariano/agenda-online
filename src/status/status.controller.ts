@@ -1,20 +1,25 @@
-import { Controller, Get } from '@nestjs/common';
-import { StatusService } from './status.service';
-import { ReturnStateDto } from 'src/state/dto/return-state.dto';
+import { Controller, Get, Param } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ReturnStatusDto } from './dto/return-status.dto';
-import { ApiOperation } from '@nestjs/swagger';
+import { StatusService } from './status.service';
 
+@ApiTags('Status')
+@ApiBearerAuth()
 @Controller('status')
 export class StatusController {
-    constructor(
-        private readonly statusService: StatusService,
-    ){}
+  constructor(private readonly statusService: StatusService) {}
 
-    @ApiOperation({ summary: 'Busca todos status.' })
-    @Get()
-    async getAllStatus(): Promise<ReturnStateDto[]> {
-        return (await this.statusService.getAllStatus()).map(
-            (status) => new ReturnStatusDto(status)
-        );
-    }
+  @ApiOperation({ summary: 'Lista status.' })
+  @Get()
+  async getAllStatus(): Promise<ReturnStatusDto[]> {
+    return (await this.statusService.getAllStatus()).map(
+      (status) => new ReturnStatusDto(status),
+    );
+  }
+
+  @ApiOperation({ summary: 'Busca status por id.' })
+  @Get(':id')
+  async getStatusById(@Param('id') id: number): Promise<ReturnStatusDto> {
+    return new ReturnStatusDto(await this.statusService.getStatusById(id));
+  }
 }

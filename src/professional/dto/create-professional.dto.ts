@@ -1,9 +1,12 @@
-import { IsInt } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsInt } from 'class-validator';
 
 export class CreateProfessionalDto {
-    @IsInt()
-    user_id: number;
+  @ApiProperty({ description: 'Id do usuário.', example: 1 })
+  @IsInt()
+  userId: number;
 
-    @IsInt()
-    establishment_id: number;
+  @ApiProperty({ description: 'Id do estabelecimento.', example: 1 })
+  @IsInt()
+  establishmentId: number;
 }

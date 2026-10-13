@@ -1,35 +1,27 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsInt, IsString } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString } from 'class-validator';
 
 export class CreateUserDto {
-
   @ApiProperty({
-    description: 'Nome usuário.',
+    description: 'Nome do usuário.',
     example: 'Maria Gabriela Gonçalves',
   })
   @IsString()
   name: string;
 
   @ApiProperty({
-    description: 'Email do usuário.',
+    description: 'E-mail do usuário.',
     example: 'teste@gmail.com',
   })
   @IsString()
   email: string;
 
   @ApiProperty({
-    description: 'Cpf do usuário.',
+    description: 'CPF do usuário.',
     example: '111.111.111-11',
   })
   @IsString()
   cpf: string;
-
-  @ApiProperty({
-    description: 'Tipo de usuário.',
-    example: 1,
-  })
-  @IsInt()
-  typeUser: number;
 
   @ApiProperty({
     description: 'Telefone do usuário.',
@@ -39,7 +31,7 @@ export class CreateUserDto {
   phone: string;
 
   @ApiProperty({
-    description: 'Senha desse usuário.',
+    description: 'Senha do usuário.',
     example: 'teste123',
   })
   @IsString()

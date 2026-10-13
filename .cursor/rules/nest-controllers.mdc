@@ -1,0 +1,30 @@
+---
+description: Padrão dos controllers Nest (CRUD da API)
+globs: src/**/*.controller.ts
+alwaysApply: false
+---
+
+# Controllers
+
+Controller fino. A regra de negócio fica no service. Um controller por recurso, cada verbo declarado no método.
+
+- `GET /` lista; `GET /:id` busca; `POST /` cria; `PATCH /:id` altera; `DELETE /:id` remove
+- Rota em kebab-case, igual à pasta: `schedule`, `product-service`, `establishment`, `user`, `schedule-service`
+- Body tipado com o DTO (`@Body() createScheduleDto: CreateScheduleDto`)
+- Resposta de lista e detalhe passa pelo DTO de retorno (`new ReturnScheduleDto(schedule)`)
+- `@ApiTags` no controller e `@ApiOperation` em cada método
+- Não consultar repository no controller
+
+```typescript
+@ApiTags('Schedule')
+@Controller('schedule')
+export class ScheduleController {
+  constructor(private readonly scheduleService: ScheduleService) {}
+
+  @ApiOperation({ summary: 'Cadastra agendamento.' })
+  @Post()
+  createSchedule(@Body() createScheduleDto: CreateScheduleDto): Promise<ScheduleEntity> {
+    return this.scheduleService.createSchedule(createScheduleDto);
+  }
+}
+```

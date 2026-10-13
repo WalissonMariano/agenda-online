@@ -1,44 +1,71 @@
-import { EstablishmentEntity } from "src/establishment/entities/establishment.entity";
-import { StatusEntity } from "src/status/entities/status.entity";
-import { UserEntity } from "src/user/entities/user.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { ScheduleServiceEntity } from "src/schedule-service/entities/schedule-service.entity";
+import { EstablishmentEntity } from '../../establishment/entities/establishment.entity';
+import { ProfessionalEntity } from '../../professional/entities/professional.entity';
+import { ScheduleServiceEntity } from '../../schedule-service/entities/schedule-service.entity';
+import { StatusEntity } from '../../status/entities/status.entity';
+import { UserEntity } from '../../user/entities/user.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-@Entity({name: 'schedule'})
+@Entity({ name: 'schedule' })
 export class ScheduleEntity {
-    @PrimaryGeneratedColumn('rowid')
-    id: number;
+  @PrimaryGeneratedColumn('rowid')
+  id: number;
 
-    @Column({name: 'user_id', nullable: false})
-    userId: number;
+  @Column({ name: 'user_id', nullable: false })
+  userId: number;
 
-    @Column({name: 'establishment_id', nullable: false})
-    establishmentId: number;
+  @Column({ name: 'establishment_id', nullable: false })
+  establishmentId: number;
 
-    @Column({name: 'status_id', nullable: false})
-    statusId: number;
+  @Column({ name: 'professional_id', nullable: false })
+  professionalId: number;
 
-    @Column({name: 'schedule_date', nullable: false})
-    scheduleDate: Date;
+  @Column({ name: 'status_id', nullable: false })
+  statusId: number;
 
-    @CreateDateColumn({name: 'created_at'})
-    createdAt: Date;
+  @Column({ name: 'schedule_date', nullable: false })
+  scheduleDate: Date;
 
-    @UpdateDateColumn({name: 'updated_at'})
-    updateddAt: Date;
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 
-    @ManyToOne(() => UserEntity, (user: UserEntity) => user.schedule, { eager: true })
-    @JoinColumn({name:'user_id', referencedColumnName: 'id'})
-    user?: UserEntity;
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
 
-    @ManyToOne(() => EstablishmentEntity, (establishment: EstablishmentEntity) => establishment.schedule, { eager: true })
-    @JoinColumn({name:'establishment_id', referencedColumnName: 'id'})
-    establishment?: EstablishmentEntity;
+  @ManyToOne(() => UserEntity, (user) => user.schedule, { eager: true })
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+  user?: UserEntity;
 
-    @ManyToOne(() => StatusEntity, (status: StatusEntity) => status.schedule, { eager: true })
-    @JoinColumn({name:'status_id', referencedColumnName: 'id'})
-    status?: StatusEntity;
+  @ManyToOne(
+    () => EstablishmentEntity,
+    (establishment) => establishment.schedule,
+    { eager: true },
+  )
+  @JoinColumn({ name: 'establishment_id', referencedColumnName: 'id' })
+  establishment?: EstablishmentEntity;
 
-    @OneToMany(() => ScheduleServiceEntity, (scheduleService: ScheduleServiceEntity) => scheduleService.schedule, {cascade: true, eager: true})
-    scheduleService?: ScheduleServiceEntity[];
+  @ManyToOne(() => ProfessionalEntity, (professional) => professional.schedules, {
+    eager: true,
+  })
+  @JoinColumn({ name: 'professional_id', referencedColumnName: 'id' })
+  professional?: ProfessionalEntity;
+
+  @ManyToOne(() => StatusEntity, (status) => status.schedule, { eager: true })
+  @JoinColumn({ name: 'status_id', referencedColumnName: 'id' })
+  status?: StatusEntity;
+
+  @OneToMany(
+    () => ScheduleServiceEntity,
+    (scheduleService) => scheduleService.schedule,
+    { cascade: true, eager: true },
+  )
+  scheduleService?: ScheduleServiceEntity[];
 }

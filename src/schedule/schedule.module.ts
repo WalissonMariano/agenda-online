@@ -1,20 +1,25 @@
 import { Module } from '@nestjs/common';
-import { ScheduleService } from './schedule.service';
-import { ScheduleController } from './schedule.controller';
-import { ScheduleEntity } from './entities/schedule.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserModule } from 'src/user/user.module';
-import { EstablishmentModule } from 'src/establishment/establishment.module';
-import { StatusModule } from 'src/status/status.module';
+import { EstablishmentModule } from '../establishment/establishment.module';
+import { ProductServiceModule } from '../product-service/product-service.module';
+import { ProfessionalModule } from '../professional/professional.module';
+import { StatusModule } from '../status/status.module';
+import { UserModule } from '../user/user.module';
+import { ScheduleEntity } from './entities/schedule.entity';
+import { ScheduleController } from './schedule.controller';
+import { ScheduleService } from './schedule.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([ScheduleEntity]),
     UserModule,
     EstablishmentModule,
-    StatusModule
+    StatusModule,
+    ProfessionalModule,
+    ProductServiceModule,
   ],
   providers: [ScheduleService],
-  controllers: [ScheduleController]
+  controllers: [ScheduleController],
+  exports: [ScheduleService],
 })
 export class ScheduleModule {}

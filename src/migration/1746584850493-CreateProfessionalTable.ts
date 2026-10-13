@@ -4,7 +4,7 @@ export class CreateProfessionalTable1746584850493 implements MigrationInterface 
     name = 'CreateProfessionalTable1746584850493'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        queryRunner.query(`
+        await queryRunner.query(`
             CREATE TABLE public.professional (
                 id integer NOT NULL,
                 user_id integer NOT NULL,
@@ -27,7 +27,7 @@ export class CreateProfessionalTable1746584850493 implements MigrationInterface 
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        queryRunner.query(`
+        await queryRunner.query(`
             drop table public.professional;
         `);
     }

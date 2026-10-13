@@ -1,16 +1,21 @@
-import { IsNumber } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsInt, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateScheduleServiceDto {
+  @ApiProperty({ description: 'Id do produto/serviço.', example: 1 })
+  @IsInt()
+  serviceId: number;
 
-    scheduleId: number;
+  @ApiProperty({ description: 'Quantidade.', example: 1 })
+  @IsNumber()
+  quantity: number;
 
-    @IsNumber()
-    serviceId: number;
-
-    @IsNumber()
-    quantity: number;
-
-    @IsNumber()
-    totalPrice: number;
-
+  @ApiProperty({
+    description: 'Id do agendamento (obrigatório no CRUD standalone).',
+    example: 1,
+    required: false,
+  })
+  @IsOptional()
+  @IsInt()
+  scheduleId?: number;
 }

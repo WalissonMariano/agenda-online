@@ -3,7 +3,7 @@ import { MigrationInterface, QueryRunner } from "typeorm";
 export class InsertInStatus1732665882827 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        queryRunner.query(`
+        await queryRunner.query(`
             INSERT INTO status("id", "name", "description") VALUES (1, 'Pending', 'Pending');
             INSERT INTO status("id", "name", "description") VALUES (2, 'Confirmed', 'Confirmed');
             INSERT INTO status("id", "name", "description") VALUES (3, 'Cancelled', 'Cancelled');
@@ -14,7 +14,7 @@ export class InsertInStatus1732665882827 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        queryRunner.query(`
+        await queryRunner.query(`
             DELETE FROM public.status;
         `);
     }

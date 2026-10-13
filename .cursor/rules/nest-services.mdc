@@ -1,0 +1,30 @@
+---
+description: Padrão dos services Nest
+globs: src/**/*.service.ts
+alwaysApply: false
+---
+
+# Services
+
+`@Injectable()`, repository e outros services injetados no construtor. O controller chama o service; o service fala com o TypeORM.
+
+- Método público é um caso de uso (`createSchedule`, `getProductServiceById`, `getEstablishmentById`)
+- Detalhe interno fica `private` (`ensureScheduleExists`)
+- Id inexistente: `NotFoundException`
+- Conflito de negócio (e-mail ou CPF já cadastrado): `ConflictException`
+- Dado inválido: `BadRequestException`
+- Mensagens de exceção em português (`Agendamento ${id} não encontrado.`)
+- Lista vazia devolve `[]`. Não lançar 404 só porque a tabela está vazia
+- Ao criar `schedule`, conferir se `user`, `establishment` e `status` existem via seus services antes do `save`
+
+```typescript
+async getScheduleById(id: number): Promise<ScheduleEntity> {
+  const schedule = await this.scheduleRepository.findOne({ where: { id } });
+
+  if (!schedule) {
+    throw new NotFoundException(`Agendamento ${id} não encontrado.`);
+  }
+
+  return schedule;
+}
+```

@@ -1,28 +1,30 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { UserService } from './user.service';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Public } from '../common/decorators/public.decorator';
+import { UserId } from '../common/decorators/user-id.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { UserEntity } from './entities/user.entity';
 import { ReturnUserDto } from './dto/return-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
-import { UserType } from './enum/user-type.enum';
-import { Roles } from 'src/decorators/roles.decorator';
-import { ApiOperation } from '@nestjs/swagger';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { UserEntity } from './entities/user.entity';
+import { UserService } from './user.service';
 
+@ApiTags('User')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Public()
   @ApiOperation({ summary: 'Cadastra usuário.' })
   @UsePipes(ValidationPipe)
   @Post()
@@ -30,28 +32,52 @@ export class UserController {
     return this.userService.createUser(createUserDto);
   }
 
-  //@Roles(UserType.Admin, UserType.User)
-  @ApiOperation({ summary: 'Busca todos usuários.' })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Lista usuários.' })
   @Get()
   async getAllUser(): Promise<ReturnUserDto[]> {
     return (await this.userService.getAllUser()).map(
       (user) => new ReturnUserDto(user),
     );
   }
-/*
-  @Get('/:userId')
-  async getUserById(@Param('userId') userId: number): Promise<ReturnUserDto> {
-    return new ReturnUserDto(await this.userService.getUserbyIdUsingRelations(userId));
+
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Atualiza senha do usuário logado.' })
+  @UsePipes(ValidationPipe)
+  @Patch('password/me')
+  async updatePasswordUser(
+    @Body() updatePasswordDto: UpdatePasswordDto,
+    @UserId() userId: number,
+  ): Promise<ReturnUserDto> {
+    return new ReturnUserDto(
+      await this.userService.updatePasswordUser(updatePasswordDto, userId),
+    );
   }
 
-  @Patch()
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Busca usuário por id.' })
+  @Get(':id')
+  async getUserById(@Param('id') id: number): Promise<ReturnUserDto> {
+    return new ReturnUserDto(await this.userService.getUserById(id));
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Atualiza usuário.' })
   @UsePipes(ValidationPipe)
-  async updatePasswordUser(
-    @Body() updatePasswordDto: UpdatePasswordDto, 
-    @UserId() userId: number,
-  ): Promise<User> {
-      return this.userService.updatePasswordUser(updatePasswordDto, userId)
-    }
-      */
- 
+  @Patch(':id')
+  async updateUser(
+    @Param('id') id: number,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<ReturnUserDto> {
+    return new ReturnUserDto(
+      await this.userService.updateUser(id, updateUserDto),
+    );
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Remove usuário.' })
+  @Delete(':id')
+  async deleteUser(@Param('id') id: number): Promise<void> {
+    return this.userService.deleteUser(id);
+  }
 }

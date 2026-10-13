@@ -1,49 +1,78 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { ProductServiceService } from './product-service.service';
-import { ReturnProductServiceDto } from './dto/return-product-service.dto';
-import { ProductServiceEntity } from './entities/product-service.entity';
-import { CreateProductServiceDto } from './dto/create-product-service.dto';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DeleteResult } from 'typeorm';
-import { ApiOperation } from '@nestjs/swagger';
+import { CreateProductServiceDto } from './dto/create-product-service.dto';
+import { ReturnProductServiceDto } from './dto/return-product-service.dto';
+import { UpdateProductServiceDto } from './dto/update-product-service.dto';
+import { ProductServiceService } from './product-service.service';
 
+@ApiTags('ProductService')
+@ApiBearerAuth()
 @Controller('product-service')
 export class ProductServiceController {
-    constructor(
-        private readonly productServiceService: ProductServiceService,
-    ) {}
+  constructor(
+    private readonly productServiceService: ProductServiceService,
+  ) {}
 
-    @ApiOperation({ summary: 'Busca todos serviços.' })
-    @Get()
-    async getAllProductService(): Promise<ReturnProductServiceDto[]> {
-        return (await this.productServiceService.getAllProductService()).map(
-            (productService) => new ReturnProductServiceDto(productService)
-        );
-    }
+  @ApiOperation({ summary: 'Lista produtos/serviços.' })
+  @Get()
+  async getAllProductService(): Promise<ReturnProductServiceDto[]> {
+    return (await this.productServiceService.getAllProductService()).map(
+      (productService) => new ReturnProductServiceDto(productService),
+    );
+  }
 
-    @ApiOperation({ summary: 'Busca serviço por id.' })
-    @Get(':id')
-    async getProductServiceById(
-        @Param('id')
-        id: number
-    ): Promise<ReturnProductServiceDto> {
-        return new ReturnProductServiceDto(await this.productServiceService.getProductServiceById(id));
-    }
+  @ApiOperation({ summary: 'Busca produto/serviço por id.' })
+  @Get(':id')
+  async getProductServiceById(
+    @Param('id') id: number,
+  ): Promise<ReturnProductServiceDto> {
+    return new ReturnProductServiceDto(
+      await this.productServiceService.getProductServiceById(id),
+    );
+  }
 
-    @ApiOperation({ summary: 'Cadastra serviço.' })
-    @Post()
-    async createProductService(
-        @Body()
-        createProductServiceDto: CreateProductServiceDto
-    ): Promise<ProductServiceEntity> {
-        return this.productServiceService.createProductService(createProductServiceDto);
-    }
+  @ApiOperation({ summary: 'Cadastra produto/serviço.' })
+  @Post()
+  @UsePipes(ValidationPipe)
+  async createProductService(
+    @Body() createProductServiceDto: CreateProductServiceDto,
+  ): Promise<ReturnProductServiceDto> {
+    return new ReturnProductServiceDto(
+      await this.productServiceService.createProductService(
+        createProductServiceDto,
+      ),
+    );
+  }
 
-    @ApiOperation({ summary: 'Deleta serviços.' })
-    @Delete(':id')
-    async deleteSchedule(
-        @Param('id')
-        id: number
-    ): Promise<DeleteResult> {
-        return this.productServiceService.deleteProductService(id);
-    }
+  @ApiOperation({ summary: 'Atualiza produto/serviço.' })
+  @Patch(':id')
+  @UsePipes(ValidationPipe)
+  async updateProductService(
+    @Param('id') id: number,
+    @Body() updateProductServiceDto: UpdateProductServiceDto,
+  ): Promise<ReturnProductServiceDto> {
+    return new ReturnProductServiceDto(
+      await this.productServiceService.updateProductService(
+        id,
+        updateProductServiceDto,
+      ),
+    );
+  }
+
+  @ApiOperation({ summary: 'Remove produto/serviço.' })
+  @Delete(':id')
+  async deleteProductService(@Param('id') id: number): Promise<DeleteResult> {
+    return this.productServiceService.deleteProductService(id);
+  }
 }

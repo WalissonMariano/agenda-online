@@ -1,18 +1,19 @@
-import { forwardRef, Module } from '@nestjs/common';
-import { AddressService } from './address.service';
-import { AddressController } from './address.controller';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CityModule } from '../city/city.module';
+import { EstablishmentModule } from '../establishment/establishment.module';
+import { AddressController } from './address.controller';
+import { AddressService } from './address.service';
 import { AddressEntity } from './entities/address.entity';
-import { CityModule } from 'src/city/city.module';
-import { EstablishmentModule } from 'src/establishment/establishment.module';
 
 @Module({
-  imports:[
+  imports: [
     TypeOrmModule.forFeature([AddressEntity]),
     CityModule,
     EstablishmentModule,
   ],
   providers: [AddressService],
-  controllers: [AddressController]
+  controllers: [AddressController],
+  exports: [AddressService],
 })
 export class AddressModule {}

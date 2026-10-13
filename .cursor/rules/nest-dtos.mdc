@@ -1,0 +1,21 @@
+---
+description: Padrão dos DTOs, validação e Swagger
+globs: src/**/dto/**/*.ts
+alwaysApply: false
+---
+
+# DTOs
+
+O body da API é um DTO com `class-validator` e `@ApiProperty`. Não validar campo solto no controller.
+
+- Create: campos obrigatórios com `@IsString`, `@IsNumber`, `@IsInt`, `@IsDateString` e exemplo no `@ApiProperty`
+- Update: `PartialType` do create, importado de `@nestjs/swagger`
+- Resposta de lista e detalhe: classe `Return*Dto` com construtor que recebe a entity
+- Senha no create de usuário entra em texto; o service faz o hash antes de gravar — não expor `password` no `ReturnUserDto`
+- Agendamento (`CreateScheduleDto`) pode trazer `scheduleService` aninhado; produto/serviço (`CreateProductServiceDto`) traz `name`, `time`, `price`, `image`, `categoryId`
+
+```typescript
+@ApiProperty({ description: 'Data da agenda.', example: '2024-10-10' })
+@IsDateString()
+scheduleDate: Date;
+```

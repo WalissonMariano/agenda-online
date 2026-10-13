@@ -1,30 +1,38 @@
-import { BadGatewayException, BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { UserType } from './enum/user-type.enum';
+import {
+  createPasswordHashed,
+  validatePassword,
+} from '../common/utils/password';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
-import { createPasswordHashed, validatePassword } from 'src/utils/password';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { UserEntity } from './entities/user.entity';
+import { UserType } from './enum/user-type.enum';
 
 @Injectable()
 export class UserService {
-
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-  ) {};
+  ) {}
 
-  async createUser(createUserDto: CreateUserDto) {
-    const user = await this.getUserByEmail(createUserDto.email).catch(() => undefined);
+  async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
+    const user = await this.getUserByEmail(createUserDto.email).catch(
+      () => undefined,
+    );
 
-    if(user) {
-      throw new BadGatewayException('email registered in system');
+    if (user) {
+      throw new ConflictException('E-mail já cadastrado.');
     }
 
-    const passwordHashed = await createPasswordHashed(
-      createUserDto.password,
-    );
+    const passwordHashed = await createPasswordHashed(createUserDto.password);
 
     return this.userRepository.save({
       ...createUserDto,
@@ -32,54 +40,46 @@ export class UserService {
       password: passwordHashed,
     });
   }
-/*
-  async getUserbyIdUsingRelations(userId: number){
-    return this.userRepository.findOne({
-      where: {
-        id: userId,
-      },
-      relations: {
-        addresses: {
-          city: {
-            state: true,
-          },
-        },
-      },
-    })
-  }
-*/
-  async getAllUser() {
+
+  async getAllUser(): Promise<UserEntity[]> {
     return this.userRepository.find();
   }
 
   async getUserById(userId: number): Promise<UserEntity> {
     const user = await this.userRepository.findOne({
-      where: {
-        id: userId
-      },
+      where: { id: userId },
     });
 
-    if(!user) {
-      throw new NotFoundException(`UserId:${userId} Not Found`);
+    if (!user) {
+      throw new NotFoundException(`Usuário ${userId} não encontrado.`);
     }
 
     return user;
-
   }
 
   async getUserByEmail(email: string): Promise<UserEntity> {
     const user = await this.userRepository.findOne({
-      where: {
-        email,
-      },
+      where: { email },
     });
 
-    if(!user) {
-      throw new NotFoundException(`Email:${email} Not Found`);
+    if (!user) {
+      throw new NotFoundException(`E-mail ${email} não encontrado.`);
     }
 
     return user;
+  }
 
+  async updateUser(
+    userId: number,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UserEntity> {
+    const user = await this.getUserById(userId);
+
+    return this.userRepository.save({
+      ...user,
+      ...updateUserDto,
+      password: user.password,
+    });
   }
 
   async updatePasswordUser(
@@ -88,25 +88,27 @@ export class UserService {
   ): Promise<UserEntity> {
     const user = await this.getUserById(userId);
 
-    const passwordHashed = await createPasswordHashed(
-      updatePasswordDto.newPassword,
-    );
-
     const isMatch = await validatePassword(
-      updatePasswordDto.lastPassword, 
+      updatePasswordDto.lastPassword,
       user.password || '',
     );
 
     if (!isMatch) {
-      throw new BadRequestException('Last password invalid')
+      throw new BadRequestException('Senha atual inválida.');
     }
+
+    const passwordHashed = await createPasswordHashed(
+      updatePasswordDto.newPassword,
+    );
 
     return this.userRepository.save({
       ...user,
       password: passwordHashed,
-    })
-    
+    });
   }
 
+  async deleteUser(userId: number): Promise<void> {
+    await this.getUserById(userId);
+    await this.userRepository.delete({ id: userId });
+  }
 }
-

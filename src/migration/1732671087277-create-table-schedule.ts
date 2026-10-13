@@ -3,7 +3,7 @@ import { MigrationInterface, QueryRunner } from "typeorm";
 export class CreateTableSchedule1732671087277 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        queryRunner.query(`
+        await queryRunner.query(`
             CREATE TABLE public.schedule (
                 id integer NOT NULL,
                 user_id integer NOT NULL,
@@ -29,7 +29,7 @@ export class CreateTableSchedule1732671087277 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        queryRunner.query(`
+        await queryRunner.query(`
             drop table public.schedule;
         `);
     }
