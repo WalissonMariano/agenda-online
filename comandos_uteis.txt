@@ -11,7 +11,7 @@ npm run start:debug
 npm run build
 npm run start:prod
 
-## Migrations
+## Migrations (sempre manuais — não rodam no start)
 npm run migration:run
 npm run migration:revert
 npm run migration:generate

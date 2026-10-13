@@ -40,7 +40,7 @@ import { UserModule } from './user/user.module';
       username: process.env.DB_USERNAME,
       entities: [`${__dirname}/**/*.entity{.js,.ts}`],
       migrations: [`${__dirname}/migration/*{.ts,.js}`],
-      migrationsRun: true,
+      migrationsRun: false,
     }),
     AuthModule,
     UserModule,

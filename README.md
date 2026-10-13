@@ -34,7 +34,7 @@ Crie um arquivo `.env` na raiz:
 npm install
 ```
 
-As migrations rodam automaticamente no boot (`migrationsRun: true`). Também é possível executar manualmente:
+As migrations **não** rodam no boot da API. Execute manualmente:
 
 ```bash
 npm run migration:run
